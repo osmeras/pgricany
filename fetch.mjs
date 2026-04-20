@@ -2,7 +2,13 @@ import { writeFileSync } from 'fs';
 
 const PILOTS = ['osmera','lupinekm','Zdenek.Moudry','mnovak','AfroFlyer','Cibulka_J'];
 const API_KEY = 'F0632ED0D6E871BA-BB28D108B0B5AF96-26B427E2774DB191';
-const HEADERS = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' };
+const HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0',
+  'Referer': 'https://www.xcontest.org/cesko/piloti/',
+  'Origin': 'https://www.xcontest.org',
+  'Accept': 'application/json, text/javascript, */*',
+  'X-Requested-With': 'XMLHttpRequest',
+};
 
 async function getPilotId(username) {
   const resp = await fetch(`https://www.xcontest.org/cesko/piloti/detail:${username}`, { headers: HEADERS });
@@ -17,7 +23,7 @@ async function fetchPilot(username) {
     if (!pilotId) return { username, error: 'Pilot ID nenalezeno' };
 
     // Stáhni lety filtrované podle pilot ID
-    const url = `https://www.xcontest.org/api/data/?flights/cpp&filter[pilot]=${pilotId}&list[num]=100&key=${API_KEY}`;
+    const url = `https://www.xcontest.org/api/data/?flights/cpp&filter[pilot]=${pilotId}&list[num]=20&key=${API_KEY}`;
     const resp = await fetch(url, { headers: HEADERS });
     const data = await resp.json();
 
