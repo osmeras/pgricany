@@ -1,35 +1,35 @@
 {
-  "updated": "2026-04-20T15:26:57.552Z",
+  "updated": "2026-04-20T15:29:03.138Z",
   "pilots": [
     {
       "username": "osmera",
       "pilotId": "33881",
-      "error": "Invalid list[num] value: 500"
+      "error": "Forbidden access"
     },
     {
       "username": "lupinekm",
       "pilotId": "40056",
-      "error": "Invalid list[num] value: 500"
+      "error": "Forbidden access"
     },
     {
       "username": "Zdenek.Moudry",
       "pilotId": "44391",
-      "error": "Invalid list[num] value: 500"
+      "error": "Forbidden access"
     },
     {
       "username": "mnovak",
       "pilotId": "59603",
-      "error": "Invalid list[num] value: 500"
+      "error": "Forbidden access"
     },
     {
       "username": "AfroFlyer",
       "pilotId": "70957",
-      "error": "Invalid list[num] value: 500"
+      "error": "Forbidden access"
     },
     {
       "username": "Cibulka_J",
       "pilotId": "41300",
-      "error": "Invalid list[num] value: 500"
+      "error": "Forbidden access"
     }
   ]
 }
