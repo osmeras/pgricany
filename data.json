@@ -1,35 +1,29 @@
 {
-  "updated": "2026-04-20T15:31:45.806Z",
+  "updated": "2026-04-20T15:41:41.382Z",
   "pilots": [
     {
       "username": "osmera",
-      "pilotId": "33881",
-      "error": "Forbidden access"
+      "error": "Data nezachycena"
     },
     {
       "username": "lupinekm",
-      "pilotId": "40056",
-      "error": "Forbidden access"
+      "error": "Data nezachycena"
     },
     {
       "username": "Zdenek.Moudry",
-      "pilotId": "44391",
-      "error": "Forbidden access"
+      "error": "Data nezachycena"
     },
     {
       "username": "mnovak",
-      "pilotId": "59603",
-      "error": "Forbidden access"
+      "error": "Data nezachycena"
     },
     {
       "username": "AfroFlyer",
-      "pilotId": "70957",
-      "error": "Forbidden access"
+      "error": "Data nezachycena"
     },
     {
       "username": "Cibulka_J",
-      "pilotId": "41300",
-      "error": "Forbidden access"
+      "error": "Data nezachycena"
     }
   ]
 }
