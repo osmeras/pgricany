@@ -17,7 +17,7 @@ async function fetchPilot(username) {
     if (!pilotId) return { username, error: 'Pilot ID nenalezeno' };
 
     // Stáhni lety filtrované podle pilot ID
-    const url = `https://www.xcontest.org/api/data/?flights/cpp&filter[pilot]=${pilotId}&list[num]=500&key=${API_KEY}`;
+    const url = `https://www.xcontest.org/api/data/?flights/cpp&filter[pilot]=${pilotId}&list[num]=100&key=${API_KEY}`;
     const resp = await fetch(url, { headers: HEADERS });
     const data = await resp.json();
 
