@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XContest Body</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f0; color: #2c2c2a;
+      min-height: 100vh; padding: 32px 16px 64px;
+    }
+    .wrap { max-width: 680px; margin: 0 auto; }
+    header { margin-bottom: 28px; }
+    .logo { font-size: 22px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+    .sub  { color: #5f5e5a; font-size: 14px; margin-top: 4px; }
+
+    .actions { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 18px; border: none; border-radius: 8px;
+      font-size: 14px; font-weight: 500; cursor: pointer;
+      text-decoration: none; transition: background .15s;
+    }
+    .btn-primary { background: #534AB7; color: #fff; }
+    .btn-primary:hover { background: #3C3489; }
+    .meta { font-size: 13px; color: #888780; }
+
+    .card { background: #fff; border: 1px solid #d3d1c7; border-radius: 12px; overflow: hidden; }
+    .card-head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 20px; border-bottom: 1px solid #e8e6df;
+    }
+    .card-title { font-size: 14px; font-weight: 500; }
+    .card-meta  { font-size: 12px; color: #888780; }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 9px 16px; text-align: left;
+      font-size: 12px; font-weight: 500; color: #5f5e5a;
+      background: #f5f5f0; border-bottom: 1px solid #d3d1c7;
+    }
+    thead th.r { text-align: right; }
+    tbody tr:hover td { background: #f9f8f5; }
+    tbody tr:not(:last-child) td { border-bottom: 1px solid #f1efe8; }
+    td { padding: 13px 16px; font-size: 14px; vertical-align: middle; }
+    td.r { text-align: right; font-variant-numeric: tabular-nums; }
+
+    .rank { font-size: 12px; font-weight: 500; color: #888780; }
+    .rank-1 { color: #BA7517; }
+    .rank-2 { color: #444441; }
+    .rank-3 { color: #854F0B; }
+
+    .pilot-link { color: inherit; text-decoration: none; font-weight: 500; }
+    .pilot-link:hover { color: #534AB7; text-decoration: underline; }
+    .pts { font-weight: 500; color: #534AB7; }
+
+    .note { font-size: 11px; color: #888780; margin-top: 2px; }
+    .error-cell { color: #A32D2D; font-size: 13px; }
+
+    .empty {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 160px; gap: 10px;
+      color: #888780; font-size: 14px;
+    }
+    .hint {
+      margin-top: 12px; padding: 12px 16px;
+      background: #e6f1fb; border: 1px solid #b5d4f4;
+      color: #0c447c; border-radius: 8px; font-size: 13px; line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">🪂 XContest — Přehled pilotů (ČPP 2026)</div>
+    <p class="sub">Data z xcontest.org · aktualizuje GitHub Actions</p>
+  </header>
+
+  <div class="actions">
+    <button class="btn btn-primary" onclick="loadData()">↻ Načíst data</button>
+    <span class="meta" id="updated"></span>
+  </div>
+
+  <div id="output">
+    <div class="card"><div class="empty">⏳ Načítám data…</div></div>
+  </div>
+
+  <div class="hint" id="hint" style="display:none">
+    Data jsou prázdná nebo chybná — pravděpodobně GitHub Actions ještě neproběhl.<br>
+    Jdi do repozitáře → záložka <strong>Actions</strong> → <strong>Fetch XContest data</strong> → <strong>Run workflow</strong>.
+    Po dokončení (cca 1 min) obnov tuto stránku.
+  </div>
+</div>
+
+<script>
+async function loadData() {
+  document.getElementById('output').innerHTML =
+    '<div class="card"><div class="empty">⏳ Načítám…</div></div>';
+  document.getElementById('hint').style.display = 'none';
+
+  try {
+    const resp = await fetch('data.json?t=' + Date.now());
+    const json = await resp.json();
+    render(json);
+  } catch(e) {
+    document.getElementById('output').innerHTML =
+      '<div class="card"><div class="empty">❌ Nepodařilo se načíst data.json</div></div>';
+    document.getElementById('hint').style.display = 'block';
+  }
+}
+
+function render(json) {
+  const pilots = json.pilots || [];
+  const updated = json.updated;
+
+  if (updated) {
+    const d = new Date(updated);
+    document.getElementById('updated').textContent =
+      'Aktualizováno: ' + d.toLocaleString('cs-CZ', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+  }
+
+  if (!pilots.length || pilots.every(p => !p.points && !p.error)) {
+    document.getElementById('output').innerHTML =
+      '<div class="card"><div class="empty">📭 Žádná data — spusť workflow v Actions</div></div>';
+    document.getElementById('hint').style.display = 'block';
+    return;
+  }
+
+  const sorted = [...pilots].sort((a, b) => (b.points || 0) - (a.points || 0));
+  const rankClass = ['rank-1','rank-2','rank-3'];
+
+  let rows = '';
+  sorted.forEach((p, i) => {
+    const rc = rankClass[i] || '';
+    if (p.error) {
+      rows += `<tr>
+        <td class="rank">${i+1}</td>
+        <td><span style="font-weight:500">${p.username}</span></td>
+        <td colspan="3" class="error-cell">⚠ ${p.error}</td>
+      </tr>`;
+    } else {
+      const name = p.name && p.name !== p.username ? p.name : p.username;
+      rows += `<tr>
+        <td class="rank ${rc}">${i+1}</td>
+        <td>
+          <a class="pilot-link" href="${p.url}" target="_blank">${name}</a>
+          ${p.note ? `<div class="note">${p.note}</div>` : ''}
+        </td>
+        <td class="r pts">${fmt(p.points)}</td>
+        <td class="r">${p.flights != null ? p.flights : '—'}</td>
+        <td class="r">${p.km != null ? Math.round(p.km).toLocaleString('cs-CZ') + ' km' : '—'}</td>
+      </tr>`;
+    }
+  });
+
+  document.getElementById('output').innerHTML = `
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">${pilots.length} pilotů · ČPP 2026</span>
+      </div>
+      <table>
+        <thead><tr>
+          <th>#</th><th>Pilot</th>
+          <th class="r">Body</th><th class="r">Letů</th><th class="r">Vzdálenost</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+function fmt(n) {
+  if (n == null) return '—';
+  return Number(n).toLocaleString('cs-CZ', { maximumFractionDigits: 2 });
+}
+
+loadData();
+</script>
+</body>
+</html>
