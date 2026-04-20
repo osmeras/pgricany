@@ -1,9 +1,7 @@
 name: Fetch XContest data
 
 on:
-  # RuÄŤnĂ­ spuĹˇtÄ›nĂ­ z GitHub UI (Actions â†’ Run workflow)
   workflow_dispatch:
-  # Automaticky kaĹľdĂ© 2 hodiny
   schedule:
     - cron: '0 */2 * * *'
 
@@ -21,6 +19,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Chromium
+        run: npx playwright install chromium --with-deps
 
       - name: Fetch data
         run: node fetch.mjs
