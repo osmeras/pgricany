@@ -1,0 +1,34 @@
+name: Fetch XContest data
+
+on:
+  # RuÄŤnĂ­ spuĹˇtÄ›nĂ­ z GitHub UI (Actions â†’ Run workflow)
+  workflow_dispatch:
+  # Automaticky kaĹľdĂ© 2 hodiny
+  schedule:
+    - cron: '0 */2 * * *'
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch data
+        run: node fetch.mjs
+
+      - name: Commit data.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          git diff --staged --quiet || git commit -m "Update XContest data"
+          git push
