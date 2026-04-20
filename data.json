@@ -1,35 +1,35 @@
 {
-  "updated": "2026-04-20T15:20:29.122Z",
+  "updated": "2026-04-20T15:26:57.552Z",
   "pilots": [
     {
       "username": "osmera",
       "pilotId": "33881",
-      "error": "Invalid source type 'pilot'"
+      "error": "Invalid list[num] value: 500"
     },
     {
       "username": "lupinekm",
       "pilotId": "40056",
-      "error": "Invalid source type 'pilot'"
+      "error": "Invalid list[num] value: 500"
     },
     {
       "username": "Zdenek.Moudry",
       "pilotId": "44391",
-      "error": "Invalid source type 'pilot'"
+      "error": "Invalid list[num] value: 500"
     },
     {
       "username": "mnovak",
       "pilotId": "59603",
-      "error": "Invalid source type 'pilot'"
+      "error": "Invalid list[num] value: 500"
     },
     {
       "username": "AfroFlyer",
       "pilotId": "70957",
-      "error": "Invalid source type 'pilot'"
+      "error": "Invalid list[num] value: 500"
     },
     {
       "username": "Cibulka_J",
       "pilotId": "41300",
-      "error": "Invalid source type 'pilot'"
+      "error": "Invalid list[num] value: 500"
     }
   ]
 }
